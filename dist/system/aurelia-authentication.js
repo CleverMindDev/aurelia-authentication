@@ -490,9 +490,9 @@ System.register(['extend', 'jwt-decode', 'aurelia-pal', 'aurelia-path', 'aurelia
               name: 'azure_ad',
               url: '/auth/azure_ad',
               authorizationEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-              redirectUri: window.location.origin,
+              redirectUri: PLATFORM.location.origin,
               logoutEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/logout',
-              postLogoutRedirectUri: window.location.origin,
+              postLogoutRedirectUri: PLATFORM.location.origin,
               requiredUrlParams: ['scope'],
               scope: ['user.read'],
               scopeDelimiter: ' ',
@@ -1424,7 +1424,8 @@ System.register(['extend', 'jwt-decode', 'aurelia-pal', 'aurelia-path', 'aurelia
                 callback(_this10.authenticated);
               }
             }).catch(function (error) {
-              return logger.warn(error.message);
+              logger.warn(error.message);
+              callback(false);
             });
 
             authenticated = true;
@@ -1434,6 +1435,7 @@ System.register(['extend', 'jwt-decode', 'aurelia-pal', 'aurelia-path', 'aurelia
                 callback(authenticated);
               } catch (error) {
                 logger.warn(error.message);
+                callback(false);
               }
             }, 1);
           }

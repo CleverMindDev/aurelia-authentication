@@ -435,9 +435,9 @@ export class BaseConfig {
       name                 : 'azure_ad',
       url                  : '/auth/azure_ad',
       authorizationEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-      redirectUri          : window.location.origin,
+      redirectUri          : PLATFORM.location.origin,
       logoutEndpoint       : 'https://login.microsoftonline.com/common/oauth2/v2.0/logout',
-      postLogoutRedirectUri: window.location.origin,
+      postLogoutRedirectUri: PLATFORM.location.origin,
       requiredUrlParams    : ['scope'],
       scope                : ['user.read'],
       scopeDelimiter       : ' ',
@@ -1642,7 +1642,10 @@ export class AuthService {
             callback(this.authenticated); // eslint-disable-line callback-return
           }
         })
-        .catch(error => logger.warn(error.message));
+        .catch(error => {
+          logger.warn(error.message)
+          callback(false);
+        });
 
       authenticated = true;
     } else if (typeof callback === 'function') {
@@ -1652,6 +1655,7 @@ export class AuthService {
           callback(authenticated); // eslint-disable-line callback-return
         } catch(error) {
           logger.warn(error.message);
+          callback(false); // eslint-disable-line callback-return
         }
       }, 1);
     }

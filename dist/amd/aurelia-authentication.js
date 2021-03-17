@@ -377,9 +377,9 @@ define(['exports', 'extend', 'jwt-decode', 'aurelia-pal', 'aurelia-path', 'aurel
           name: 'azure_ad',
           url: '/auth/azure_ad',
           authorizationEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-          redirectUri: window.location.origin,
+          redirectUri: _aureliaPal.PLATFORM.location.origin,
           logoutEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/logout',
-          postLogoutRedirectUri: window.location.origin,
+          postLogoutRedirectUri: _aureliaPal.PLATFORM.location.origin,
           requiredUrlParams: ['scope'],
           scope: ['user.read'],
           scopeDelimiter: ' ',
@@ -1318,7 +1318,8 @@ define(['exports', 'extend', 'jwt-decode', 'aurelia-pal', 'aurelia-path', 'aurel
             callback(_this10.authenticated);
           }
         }).catch(function (error) {
-          return logger.warn(error.message);
+          logger.warn(error.message);
+          callback(false);
         });
 
         authenticated = true;
@@ -1328,6 +1329,7 @@ define(['exports', 'extend', 'jwt-decode', 'aurelia-pal', 'aurelia-path', 'aurel
             callback(authenticated);
           } catch (error) {
             logger.warn(error.message);
+            callback(false);
           }
         }, 1);
       }

@@ -383,9 +383,9 @@ var BaseConfig = exports.BaseConfig = function () {
         name: 'azure_ad',
         url: '/auth/azure_ad',
         authorizationEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-        redirectUri: window.location.origin,
+        redirectUri: _aureliaPal.PLATFORM.location.origin,
         logoutEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/logout',
-        postLogoutRedirectUri: window.location.origin,
+        postLogoutRedirectUri: _aureliaPal.PLATFORM.location.origin,
         requiredUrlParams: ['scope'],
         scope: ['user.read'],
         scopeDelimiter: ' ',
@@ -1324,7 +1324,8 @@ var AuthService = exports.AuthService = (_dec12 = (0, _aureliaDependencyInjectio
           callback(_this10.authenticated);
         }
       }).catch(function (error) {
-        return logger.warn(error.message);
+        logger.warn(error.message);
+        callback(false);
       });
 
       authenticated = true;
@@ -1334,6 +1335,7 @@ var AuthService = exports.AuthService = (_dec12 = (0, _aureliaDependencyInjectio
           callback(authenticated);
         } catch (error) {
           logger.warn(error.message);
+          callback(false);
         }
       }, 1);
     }

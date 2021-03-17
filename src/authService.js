@@ -319,7 +319,10 @@ export class AuthService {
             callback(this.authenticated); // eslint-disable-line callback-return
           }
         })
-        .catch(error => logger.warn(error.message));
+        .catch(error => {
+          logger.warn(error.message)
+          callback(false);
+        });
 
       authenticated = true;
     } else if (typeof callback === 'function') {
@@ -329,6 +332,7 @@ export class AuthService {
           callback(authenticated); // eslint-disable-line callback-return
         } catch(error) {
           logger.warn(error.message);
+          callback(false); // eslint-disable-line callback-return
         }
       }, 1);
     }

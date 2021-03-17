@@ -337,9 +337,9 @@ export let BaseConfig = class BaseConfig {
         name: 'azure_ad',
         url: '/auth/azure_ad',
         authorizationEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-        redirectUri: window.location.origin,
+        redirectUri: PLATFORM.location.origin,
         logoutEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/logout',
-        postLogoutRedirectUri: window.location.origin,
+        postLogoutRedirectUri: PLATFORM.location.origin,
         requiredUrlParams: ['scope'],
         scope: ['user.read'],
         scopeDelimiter: ' ',
@@ -1221,7 +1221,10 @@ export let AuthService = (_dec12 = inject(Authentication, BaseConfig, BindingSig
         if (typeof callback === 'function') {
           callback(this.authenticated);
         }
-      }).catch(error => logger.warn(error.message));
+      }).catch(error => {
+        logger.warn(error.message);
+        callback(false);
+      });
 
       authenticated = true;
     } else if (typeof callback === 'function') {
@@ -1230,6 +1233,7 @@ export let AuthService = (_dec12 = inject(Authentication, BaseConfig, BindingSig
           callback(authenticated);
         } catch (error) {
           logger.warn(error.message);
+          callback(false);
         }
       }, 1);
     }
